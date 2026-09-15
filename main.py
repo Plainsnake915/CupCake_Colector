@@ -12,7 +12,6 @@ player_image = pygame.transform.scale(
 cupcake_image = pygame.image.load(
     "assets/cupcake.png"
 ).convert_alpha()
-
 cupcake_image = pygame.transform.scale(
     cupcake_image,
     (30, 30)
@@ -62,8 +61,8 @@ async def main():  # 2. Add 'async' before your main function definition
             50
         )
         # --- Your Game Logic & Drawing Code Here ---
-        screen.fill((0, 0, 0)) 
-        pygame.time.delay(30)
+        screen.fill((0, 0, 0))
+        await asyncio.sleep(1 / 60)
         screen.blit(player_image, (player_x, player_y))  # Example of drawing the player image
         for platform in platforms:
             pygame.draw.rect(
