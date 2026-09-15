@@ -9,6 +9,22 @@ player_image = pygame.transform.scale(
     player_image,
     (50, 50)
 )
+cupcake_image = pygame.image.load(
+    "assets/cupcake.png"
+).convert_alpha()
+
+cupcake_image = pygame.transform.scale(
+    cupcake_image,
+    (30, 30)
+)
+
+
+cupcakes = [
+    pygame.Rect(150, 230, 30, 30),
+    pygame.Rect(400, 180, 30, 30),
+    pygame.Rect(520, 310, 30, 30)
+]
+
 platforms = [
     pygame.Rect(0, 350, 600, 50),
     pygame.Rect(100, 270, 150, 20),
@@ -30,6 +46,8 @@ async def main():  # 2. Add 'async' before your main function definition
     gravity = 0.5
     jump_speed = -10
     on_ground = False
+    score = 0
+
 
     
     while running:
@@ -58,7 +76,12 @@ async def main():  # 2. Add 'async' before your main function definition
                 player_dy = 0
                 on_ground = True
             
-        
+        for cupcake in cupcakes:
+            screen.blit(
+                cupcake_image,
+                (cupcake.x, cupcake.y)
+            )
+
 
         pygame.display.flip()
         keys = pygame.key.get_pressed()
@@ -79,7 +102,12 @@ async def main():  # 2. Add 'async' before your main function definition
         if on_ground:
             player_dy = 0
         player_y += player_dy
-        
+
+        for cupcake in cupcakes[:]:
+            if player_rect.colliderect(cupcake):
+                cupcakes.remove(cupcake)
+                score += 1
+
         collision = False
         for platform in platforms:
             if player_rect.colliderect(platform):
