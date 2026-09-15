@@ -9,6 +9,12 @@ player_image = pygame.transform.scale(
     player_image,
     (50, 50)
 )
+platforms = [
+    pygame.Rect(0, 350, 600, 50),
+    pygame.Rect(100, 270, 150, 20),
+    pygame.Rect(350, 220, 150, 20)
+]
+
 
 
 
@@ -23,7 +29,7 @@ async def main():  # 2. Add 'async' before your main function definition
     player_dy = 0
     gravity = 0.5
     jump_speed = -10
-    on_ground = True
+    on_ground = False
 
     
     while running:
@@ -31,17 +37,38 @@ async def main():  # 2. Add 'async' before your main function definition
             if event.type == pygame.QUIT:
                 running = False
                 
+        player_rect = pygame.Rect(
+            player_x,
+            player_y,
+            50,
+            50
+        )
         # --- Your Game Logic & Drawing Code Here ---
         screen.fill((0, 0, 0)) 
         pygame.time.delay(30)
         screen.blit(player_image, (player_x, player_y))  # Example of drawing the player image
+        for platform in platforms:
+            pygame.draw.rect(
+                screen,
+                (100, 180, 100),
+                platform
+            )
+            if player_rect.colliderect(platform):
+                player_y = platform.top - player_rect.height+1
+                player_dy = 0
+                on_ground = True
+            
+        
+
         pygame.display.flip()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             player_x -= 5
+            
 
         if keys[pygame.K_RIGHT]:
             player_x += 5
+            
 
         if keys[pygame.K_UP] and on_ground:
             player_dy = jump_speed
@@ -49,11 +76,19 @@ async def main():  # 2. Add 'async' before your main function definition
 
         # Apply gravity
         player_dy += gravity
-        player_y += player_dy
-        if player_y >= 300:
-            player_y = 300
+        if on_ground:
             player_dy = 0
-        on_ground = True
+        player_y += player_dy
+        
+        collision = False
+        for platform in platforms:
+            if player_rect.colliderect(platform):
+                collision = True
+                break
+        if not collision:
+            on_ground = False
+        
+        
 
 
         
