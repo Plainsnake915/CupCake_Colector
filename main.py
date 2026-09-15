@@ -9,8 +9,7 @@ player_image = pygame.transform.scale(
     player_image,
     (50, 50)
 )
-player_x = 50
-player_y = 300
+
 
 
 
@@ -21,6 +20,10 @@ async def main():  # 2. Add 'async' before your main function definition
     running = True
     player_x = 50
     player_y = 300
+    player_dy = 0
+    gravity = 0.5
+    jump_speed = -10
+    on_ground = True
 
     
     while running:
@@ -30,6 +33,7 @@ async def main():  # 2. Add 'async' before your main function definition
                 
         # --- Your Game Logic & Drawing Code Here ---
         screen.fill((0, 0, 0)) 
+        pygame.time.delay(30)
         screen.blit(player_image, (player_x, player_y))  # Example of drawing the player image
         pygame.display.flip()
         keys = pygame.key.get_pressed()
@@ -38,7 +42,19 @@ async def main():  # 2. Add 'async' before your main function definition
 
         if keys[pygame.K_RIGHT]:
             player_x += 5
-        pygame.time.delay(30)  # Delay to control frame rate
+
+        if keys[pygame.K_UP] and on_ground:
+            player_dy = jump_speed
+            on_ground = False
+
+        # Apply gravity
+        player_dy += gravity
+        player_y += player_dy
+        if player_y >= 300:
+            player_y = 300
+            player_dy = 0
+        on_ground = True
+
 
         
         await asyncio.sleep(0)  # 3. CRITICAL: Add this at the VERY END of your while loop
