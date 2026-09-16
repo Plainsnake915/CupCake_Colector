@@ -3,6 +3,7 @@ import asyncio  # 1. Import asyncio
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
+score_font = pygame.font.Font(None, 36)
 
 player_image = pygame.image.load("assets/player.png").convert_alpha()
 player_image = pygame.transform.scale(
@@ -81,6 +82,8 @@ async def main():  # 2. Add 'async' before your main function definition
                 (cupcake.x, cupcake.y)
             )
 
+        score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
+        screen.blit(score_text, (20, 20))
 
         pygame.display.flip()
         keys = pygame.key.get_pressed()
@@ -106,6 +109,10 @@ async def main():  # 2. Add 'async' before your main function definition
             if player_rect.colliderect(cupcake):
                 cupcakes.remove(cupcake)
                 score += 1
+        if not cupcakes:
+            cupcakes.append(pygame.Rect(150, 230, 30, 30))
+            cupcakes.append(pygame.Rect(400, 180, 30, 30))
+            cupcakes.append(pygame.Rect(520, 310, 30, 30))
 
         collision = False
         for platform in platforms:
