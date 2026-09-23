@@ -29,7 +29,7 @@ async def main():  # 2. Add 'async' before your main function definition
     cupcake_image = pygame.image.load("assets/cupcake.png").convert_alpha()
     cupcake_image = pygame.transform.scale(cupcake_image, (30, 30))
 
-    score_font = pygame.font.Font(None, 36)
+    #score_font = pygame.font.Font(None, 36)
 
     running = True
     player_x = 50
@@ -71,8 +71,8 @@ async def main():  # 2. Add 'async' before your main function definition
                 (cupcake.x, cupcake.y)
             )
 
-        score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
-        screen.blit(score_text, (20, 20))
+        #score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
+        #screen.blit(score_text, (20, 20))
 
         pygame.display.flip()
         keys = pygame.key.get_pressed()
