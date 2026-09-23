@@ -125,11 +125,12 @@ async def main():  # 2. Add 'async' before your main function definition
         
 
 
+        await asyncio.sleep(1/60)
 
-        clock.tick(60)  # Limit the frame rate to 60 FPS
-        await asyncio.sleep(0)
-
-# Run the game using asyncio
-asyncio.run(main())  # 4. Initialize the loop
-
+try:
+    asyncio.run(main())
+except Exception as e:
+    import traceback
+    traceback.print_exc()
+    print("CRASHED:", e)
 
