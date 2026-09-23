@@ -3,22 +3,7 @@ import asyncio  # 1. Import asyncio
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
-score_font = pygame.font.Font(None, 36)
 clock = pygame.time.Clock()
-
-player_image = pygame.image.load("assets/player.png").convert_alpha()
-player_image = pygame.transform.scale(
-    player_image,
-    (50, 50)
-)
-cupcake_image = pygame.image.load(
-    "assets/cupcake.png"
-).convert_alpha()
-cupcake_image = pygame.transform.scale(
-    cupcake_image,
-    (30, 30)
-)
-
 
 cupcakes = [
     pygame.Rect(150, 230, 30, 30),
@@ -33,13 +18,21 @@ platforms = [
 ]
 
 
-
-
-
-
-
 # Place your game loop inside an async function
 async def main():  # 2. Add 'async' before your main function definition
+    # Give the browser's event loop a chance to finish unpacking
+    # assets from the .tar.gz before we try to load them.
+    await asyncio.sleep(0)
+
+    # --- Load assets INSIDE main(), after the yield above ---
+    player_image = pygame.image.load("assets/player.png").convert_alpha()
+    player_image = pygame.transform.scale(player_image, (50, 50))
+
+    cupcake_image = pygame.image.load("assets/cupcake.png").convert_alpha()
+    cupcake_image = pygame.transform.scale(cupcake_image, (30, 30))
+
+    score_font = pygame.font.Font(None, 36)
+
     running = True
     player_x = 50
     player_y = 300
@@ -49,13 +42,11 @@ async def main():  # 2. Add 'async' before your main function definition
     on_ground = False
     score = 0
 
-
-    
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                
+
         player_rect = pygame.Rect(
             player_x,
             player_y,
@@ -72,10 +63,10 @@ async def main():  # 2. Add 'async' before your main function definition
                 platform
             )
             if player_rect.colliderect(platform):
-                player_y = platform.top - player_rect.height+1
+                player_y = platform.top - player_rect.height + 1
                 player_dy = 0
                 on_ground = True
-            
+
         for cupcake in cupcakes:
             screen.blit(
                 cupcake_image,
@@ -89,11 +80,9 @@ async def main():  # 2. Add 'async' before your main function definition
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             player_x -= 5
-            
 
         if keys[pygame.K_RIGHT]:
             player_x += 5
-            
 
         if keys[pygame.K_UP] and on_ground:
             player_dy = jump_speed
@@ -121,16 +110,14 @@ async def main():  # 2. Add 'async' before your main function definition
                 break
         if not collision:
             on_ground = False
-        
-        
+
+        await asyncio.sleep(1 / 60)
 
 
-        await asyncio.sleep(1/60)
-
+# Run the game using asyncio, and make sure any crash actually prints
 try:
-    asyncio.run(main())
+    asyncio.run(main())  # 4. Initialize the loop
 except Exception as e:
     import traceback
     traceback.print_exc()
     print("CRASHED:", e)
-
