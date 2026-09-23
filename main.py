@@ -63,7 +63,6 @@ async def main():  # 2. Add 'async' before your main function definition
         )
         # --- Your Game Logic & Drawing Code Here ---
         screen.fill((0, 0, 0))
-        await asyncio.sleep(1 / 60)
         screen.blit(player_image, (player_x, player_y))  # Example of drawing the player image
         for platform in platforms:
             pygame.draw.rect(
@@ -126,7 +125,7 @@ async def main():  # 2. Add 'async' before your main function definition
 
 
         
-        await asyncio.sleep(0)  # 3. CRITICAL: Add this at the VERY END of your while loop
+        await asyncio.sleep(1 / 60)
 
 # Run the game using asyncio
 asyncio.run(main())  # 4. Initialize the loop
