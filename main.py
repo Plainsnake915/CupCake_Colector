@@ -20,11 +20,9 @@ platforms = [
 
 # Place your game loop inside an async function
 async def main():  # 2. Add 'async' before your main function definition
-    # Give the browser's event loop a chance to finish unpacking
-    # assets from the .tar.gz before we try to load them.
+   
     await asyncio.sleep(0)
 
-    # --- Load assets INSIDE main(), after the yield above ---
     player_image = pygame.image.load("assets/player.png").convert_alpha()
     player_image = pygame.transform.scale(player_image, (50, 50))
 
@@ -114,7 +112,7 @@ async def main():  # 2. Add 'async' before your main function definition
         await asyncio.sleep(1 / 60)
 
 
-# Run the game using asyncio, and make sure any crash actually prints
+
 try:
     asyncio.run(main())  # 4. Initialize the loop
 except Exception as e:
