@@ -4,6 +4,7 @@ import asyncio  # 1. Import asyncio
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 score_font = pygame.font.Font(None, 36)
+clock = pygame.time.Clock()
 
 player_image = pygame.image.load("assets/player.png").convert_alpha()
 player_image = pygame.transform.scale(
@@ -124,8 +125,9 @@ async def main():  # 2. Add 'async' before your main function definition
         
 
 
-        
-        await asyncio.sleep(1 / 60)
+
+        clock.tick(60)  # Limit the frame rate to 60 FPS
+        await asyncio.sleep(0)
 
 # Run the game using asyncio
 asyncio.run(main())  # 4. Initialize the loop
